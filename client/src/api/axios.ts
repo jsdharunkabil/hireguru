@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const api = axios.create({ baseURL: '/api' })
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || '/api',
+})
 
 api.interceptors.request.use((config) => {
   const raw = localStorage.getItem('hireguru-auth')
@@ -22,4 +24,5 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
 export default api
