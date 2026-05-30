@@ -214,7 +214,7 @@ export default function LoginPage() {
 
             {/* Google ✅ <a tag was missing before */}
             <a
-              href="http://localhost:5000/api/auth/google"
+              href="https://hireguru.onrender.com/api/auth/google"
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 gap: 10, width: '100%', padding: '12px', borderRadius: 12,

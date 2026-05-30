@@ -6,6 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import passport from './config/passport';
 import { connectDB } from './config/db';
 import authRoutes from './routes/auth.routes';
 import resumeRoutes from './routes/resume.routes';
@@ -18,16 +19,19 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Security
-app.use(helmet())
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}))
 app.use(morgan('dev'))
 app.use(cookieParser())
 
-// CORS — single definition
+// CORS
 app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://hireguru-theta.vercel.app',
     'https://hireguru.vercel.app',
+    process.env.FRONTEND_URL || '',
     process.env.CLIENT_URL || '',
   ],
   credentials: true,
@@ -35,6 +39,9 @@ app.use(cors({
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Passport
+app.use(passport.initialize())
 
 // Rate limiting
 app.use('/api/', generalLimiter)
