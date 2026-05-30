@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+:root {
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  /* Light theme — professional purple-tinted white */
+  --bg:            #f0f0f7;
+  --bg-card:       #ffffff;
+  --bg-input:      #f5f5fb;
+  --bg-card-hover: #fafafa;
+  --text:          #1a1a2e;
+  --text-muted:    #6b6b8a;
+  --text-subtle:   #4a4a6a;
+  --border:        rgba(108,99,255,0.12);
+  --border-focus:  #6c63ff;
+  --nav-bg:        rgba(255,255,255,0.85);
+  --accent:        linear-gradient(135deg, #6c63ff, #3ecfcf);
+  --accent-solid:  #6c63ff;
+  --accent-teal:   #3ecfcf;
+  --danger:        #ef4444;
+  --success:       #10b981;
+  --warning:       #f59e0b;
+  --shadow:        0 1px 3px rgba(108,99,255,0.08), 0 4px 16px rgba(108,99,255,0.06);
+  --shadow-card:   0 2px 8px rgba(108,99,255,0.08);
+}
+
+[data-theme="dark"] {
+  --bg:            #0d0d1a;
+  --bg-card:       #13132a;
+  --bg-input:      #1a1a2e;
+  --bg-card-hover: #1e1e35;
+  --text:          #e8e8f0;
+  --text-muted:    #8888aa;
+  --text-subtle:   #b0b0cc;
+  --border:        rgba(108,99,255,0.15);
+  --border-focus:  #6c63ff;
+  --nav-bg:        rgba(13,13,26,0.9);
+  --shadow:        0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
+  --shadow-card:   0 2px 8px rgba(0,0,0,0.3);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+input, textarea, select {
+  font-family: var(--font-body);
+}
