@@ -10,7 +10,7 @@ import aiRoutes from './routes/ai.routes';
 import userRoutes from './routes/user.routes';
 import jdRoutes from './routes/jd.routes';
 import { generalLimiter, aiLimiter, authLimiter } from './middleware/rateLimit.middleware';
-import passport from './config/passport'
+
 import helmet from 'helmet'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser';
@@ -33,7 +33,7 @@ app.use('/api/jd', jdRoutes);
 app.use('/api/', generalLimiter);
 app.use('/api/auth', authLimiter);
 app.use('/api/ai', aiLimiter);
-app.use(passport.initialize());
+
 app.use(helmet())
 app.use(morgan('dev'))
 app.use(cookieParser());
