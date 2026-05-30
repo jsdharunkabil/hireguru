@@ -40,6 +40,15 @@ app.use(cookieParser());
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://hireguru-theta.vercel.app',
+    'https://hireguru.onrender.com',
+    process.env.CLIENT_URL || '',
+  ],
+  credentials: true,
+}))
 
 connectDB().then(() => {
   app.listen(PORT, () => {
