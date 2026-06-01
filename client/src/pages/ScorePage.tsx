@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import api from '../api/axios'
 import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 import PageTransition from '../components/PageTransition'
 import { exportScorePDF } from '../utils/exportPDF'
-import Footer from '../components/Footer';
 
 interface Resume { _id: string; filename: string }
 interface ScoreResult {
@@ -17,7 +17,7 @@ interface ScoreResult {
 }
 
 function Bar({ label, value }: { label: string; value: number }) {
-  const color = value >= 70 ? '#3ecfcf' : value >= 50 ? '#f59e0b' : '#ef4444'
+  const color = value >= 70 ? '#10b981' : value >= 50 ? '#f59e0b' : '#ef4444'
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
@@ -53,11 +53,11 @@ export default function ScorePage() {
   })
 
   const scoreColor = scoreResult
-    ? scoreResult.overallScore >= 70 ? '#3ecfcf' : scoreResult.overallScore >= 50 ? '#f59e0b' : '#ef4444'
+    ? scoreResult.overallScore >= 70 ? '#10b981' : scoreResult.overallScore >= 50 ? '#f59e0b' : '#ef4444'
     : '#6c63ff'
 
-  const inputStyle = {
-    width: '100%', padding: '10px 14px', borderRadius: 10, fontSize: 13,
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '10px 14px', borderRadius: 10, fontSize: 14,
     background: 'var(--bg-input)', border: '1px solid var(--border)',
     color: 'var(--text)', outline: 'none',
   }
@@ -66,60 +66,57 @@ export default function ScorePage() {
     <PageTransition>
       <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
         <Navbar />
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '40px 24px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(24px,4vw,40px) clamp(16px,4vw,24px)' }}>
 
-          <div style={{ marginBottom: 32 }}>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
+          <div style={{ marginBottom: 28 }}>
+            <button onClick={() => navigate(-1 as any)}
+              style={{ fontSize: 13, color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 10, padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+              ← Back
+            </button>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,5vw,34px)', fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
               Resume Scorer
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: 15 }}>AI-powered ATS score and keyword gap analysis</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 20 }}>
 
             {/* Input */}
-            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, padding: 24 }}>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: 'var(--text)', marginBottom: 20 }}>Job Details</h2>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, padding: 'clamp(16px,3vw,24px)', boxShadow: 'var(--shadow-card)' }}>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: 'var(--text)', marginBottom: 18 }}>Job Details</h2>
 
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 14 }}>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 6 }}>Select Resume</label>
-                <select value={selectedResume} onChange={e => setSelectedResume(e.target.value)} style={{ ...inputStyle }}>
+                <select value={selectedResume} onChange={e => setSelectedResume(e.target.value)} style={inputStyle}>
                   <option value="">Choose a resume...</option>
                   {resumeData?.map(r => <option key={r._id} value={r._id}>{r.filename}</option>)}
                 </select>
               </div>
 
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 14 }}>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 6 }}>Job Title</label>
                 <input value={jobTitle} onChange={e => setJobTitle(e.target.value)}
                   placeholder="e.g. Full Stack Developer" style={inputStyle} />
               </div>
 
-              <div style={{ marginBottom: 20 }}>
+              <div style={{ marginBottom: 18 }}>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 6 }}>Job Description</label>
                 <textarea value={jobDescription} onChange={e => setJobDescription(e.target.value)}
                   placeholder="Paste the full job description here..."
-                  rows={9} style={{ ...inputStyle, resize: 'none' }} />
+                  rows={8} style={{ ...inputStyle, resize: 'none' }} />
               </div>
 
-              <button
-                onClick={() => scoreMutation.mutate()}
+              <button onClick={() => scoreMutation.mutate()}
                 disabled={!selectedResume || !jobDescription || scoreMutation.isPending}
-                style={{
-                  width: '100%', padding: '12px', borderRadius: 12, fontSize: 14,
-                  fontWeight: 600, border: 'none', cursor: 'pointer', transition: 'opacity .2s',
-                  background: (!selectedResume || !jobDescription || scoreMutation.isPending)
-                    ? 'rgba(108,99,255,0.3)' : 'linear-gradient(135deg,#6c63ff,#3ecfcf)',
-                  color: 'white',
-                }}>
+                style={{ width: '100%', padding: '12px', borderRadius: 12, fontSize: 14, fontWeight: 600, border: 'none', cursor: 'pointer', transition: 'opacity .2s', background: (!selectedResume || !jobDescription || scoreMutation.isPending) ? 'rgba(108,99,255,0.3)' : 'linear-gradient(135deg,#6c63ff,#3ecfcf)', color: 'white' }}>
                 {scoreMutation.isPending ? '⚙️ Analyzing...' : '✨ Score My Resume'}
               </button>
             </div>
 
             {/* Result */}
-            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, padding: 24 }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, padding: 'clamp(16px,3vw,24px)', boxShadow: 'var(--shadow-card)', minHeight: 300 }}>
               {!scoreResult && !scoreMutation.isPending && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', color: 'var(--text-muted)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', color: 'var(--text-muted)', padding: '40px 0' }}>
                   <div style={{ fontSize: 48, marginBottom: 16 }}>🎯</div>
                   <p style={{ fontWeight: 500, color: 'var(--text-subtle)' }}>Your score will appear here</p>
                   <p style={{ fontSize: 13, marginTop: 4 }}>Fill in the form and click Score</p>
@@ -127,7 +124,7 @@ export default function ScorePage() {
               )}
 
               {scoreMutation.isPending && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', padding: '40px 0' }}>
                   <div style={{ fontSize: 40, marginBottom: 12 }}>⚙️</div>
                   <p style={{ fontWeight: 500, color: 'var(--text)' }}>AI is analyzing your resume...</p>
                   <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>This takes 10–20 seconds</p>
@@ -136,10 +133,9 @@ export default function ScorePage() {
 
               {scoreResult && (
                 <div>
-                  {/* Score circle */}
-                  <div style={{ textAlign: 'center', marginBottom: 24 }}>
-                    <div style={{ width: 100, height: 100, borderRadius: '50%', border: `4px solid ${scoreColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
-                      <span style={{ fontSize: 30, fontWeight: 700, color: scoreColor, fontFamily: 'var(--font-display)' }}>
+                  <div style={{ textAlign: 'center', marginBottom: 22 }}>
+                    <div style={{ width: 90, height: 90, borderRadius: '50%', border: `4px solid ${scoreColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
+                      <span style={{ fontSize: 28, fontWeight: 700, color: scoreColor, fontFamily: 'var(--font-display)' }}>
                         {scoreResult.overallScore}
                       </span>
                     </div>
@@ -147,8 +143,7 @@ export default function ScorePage() {
                     <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4, lineHeight: 1.6 }}>{scoreResult.summary}</p>
                   </div>
 
-                  {/* Bars */}
-                  <div style={{ marginBottom: 20 }}>
+                  <div style={{ marginBottom: 18 }}>
                     <Bar label="ATS Compatibility" value={scoreResult.atsScore} />
                     <Bar label="Experience" value={scoreResult.sections.experience} />
                     <Bar label="Skills" value={scoreResult.sections.skills} />
@@ -156,12 +151,11 @@ export default function ScorePage() {
                     <Bar label="Formatting" value={scoreResult.sections.formatting} />
                   </div>
 
-                  {/* Keywords */}
                   <div style={{ marginBottom: 14 }}>
                     <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 8 }}>✅ Matched Keywords</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                       {scoreResult.matchedKeywords.slice(0, 8).map(k => (
-                        <span key={k} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 20, background: 'rgba(62,207,159,0.1)', color: '#3ecfcf' }}>{k}</span>
+                        <span key={k} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 20, background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>{k}</span>
                       ))}
                     </div>
                   </div>
@@ -188,17 +182,12 @@ export default function ScorePage() {
                     style={{ width: '100%', padding: '10px', borderRadius: 10, fontSize: 13, background: 'var(--bg-input)', color: 'var(--text-subtle)', border: '1px solid var(--border)', cursor: 'pointer' }}>
                     ⬇ Download PDF Report
                   </button>
-
-                  <button onClick={() => navigate('/score/history')}
-                    style={{ width: '100%', padding: '10px', borderRadius: 10, fontSize: 13, background: 'var(--bg-input)', color: 'var(--text-subtle)', border: '1px solid var(--border)', cursor: 'pointer', marginTop: 8 }}>
-                    📋 View Score History
-                  </button>
                 </div>
               )}
             </div>
           </div>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </PageTransition>
   )

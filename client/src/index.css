@@ -1,11 +1,9 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+@import "tailwindcss";
 
 :root {
   --font-display: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
-
-  /* Light theme — professional purple-tinted white */
   --bg:            #f0f0f7;
   --bg-card:       #ffffff;
   --bg-input:      #f5f5fb;
@@ -16,7 +14,6 @@
   --border:        rgba(108,99,255,0.12);
   --border-focus:  #6c63ff;
   --nav-bg:        rgba(255,255,255,0.85);
-  --accent:        linear-gradient(135deg, #6c63ff, #3ecfcf);
   --accent-solid:  #6c63ff;
   --accent-teal:   #3ecfcf;
   --danger:        #ef4444;
@@ -35,7 +32,6 @@
   --text-muted:    #8888aa;
   --text-subtle:   #b0b0cc;
   --border:        rgba(108,99,255,0.15);
-  --border-focus:  #6c63ff;
   --nav-bg:        rgba(13,13,26,0.9);
   --shadow:        0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
   --shadow-card:   0 2px 8px rgba(0,0,0,0.3);
@@ -57,6 +53,23 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
-input, textarea, select {
-  font-family: var(--font-body);
+/* Responsive utilities */
+.desktop-only { display: flex !important; }
+.mobile-only { display: none !important; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: flex !important; }
+}
+
+/* Prevent iOS input zoom */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch targets */
+@media (max-width: 768px) {
+  button { min-height: 40px; }
 }
